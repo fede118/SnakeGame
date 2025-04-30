@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="css/style.css">
+    <body>
+    <div id="title">
+        <pre id="ascii-title">
+███████╗███╗   ██╗ █████╗ ██╗  ██╗███████╗       ████████╗██╗  ██╗███████╗     ██████╗  █████╗ ███╗   ███╗███████╗
+██╔════╝████╗  ██║██╔══██╗██║ ██╔╝██╔════╝       ╚══██╔══╝██║  ██║██╔════╝    ██╔════╝ ██╔══██╗████╗ ████║██╔════╝
+███████╗██╔██╗ ██║███████║█████╔╝ █████╗            ██║   ███████║█████╗      ██║  ███╗███████║██╔████╔██║█████╗
+╚════██║██║╚██╗██║██╔══██║██╔═██╗ ██╔══╝            ██║   ██╔══██║██╔══╝      ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝
+███████║██║ ╚████║██║  ██║██║  ██╗███████╗▄█╗       ██║   ██║  ██║███████╗    ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗
+╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝       ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
+        </pre>
+    </div>
+    <div id="menu">
+        <h2>Choose Difficulty:</h2>
+        <div id="difficulty-options">
+            <div id="easy" class="option">> Easy</div>
+            <div id="medium" class="option">&nbsp;&nbsp;Medium</div>
+            <div id="hard" class="option">&nbsp;&nbsp;Hard</div>
+        </div>
+    </div>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div id="score">Score: 0</div>
+        <div id="game-over">
+            <pre id="ascii-title">
+        ██████╗   █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗
+       ██╔═══██╗ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗
+       ██║       ███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝
+       ██║  ███╗ ██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║██║   ██║██╔══╝  ██╔██═╝
+       ██║   ██║ ██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝╚██████╔╝███████╗██║╚██╗
+       ╚██████╔╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝  ╚═════╝ ╚══════╝╚═╝ ╚═╝
+        ╚═════╝
+            </pre>
+            <p>Score: <span id="final-score">0</span></p>
+            <div id="game-over-options">
+                <div id="restart" class="option">> Restart</div>
+                <div id="main-menu" class="option">&nbsp;&nbsp;Main Menu</div>
+            </div>
+        </div>
+        <div id="pause-screen">
+            <h2>Paused</h2>
+            <div id="pause-options">
+                <div id="resume" class="option">> Resume</div>
+                <div id="main-menu-pause" class="option">  Main Menu</div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="js/script.js"></script>
+</body>
+</html>

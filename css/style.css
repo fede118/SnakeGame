@@ -1,0 +1,160 @@
+body {
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    background-color: #1a2b1f; /* Dark green-gray for Nokia retro vibe */
+    font-family: 'Courier New', Courier, monospace; /* Retro monospace font */
+    overflow: hidden; /* Prevent overflow */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    margin: 0; /* Remove default margin */
+    background-color: #000; /* Optional: Set a background color */
+}
+
+#title {
+    justify-content: center;
+}
+
+#ascii-title {
+    color: #00ff00; /* Nokia green */
+    text-shadow: 0 0 5px #00ff00; /* Glow effect */
+    font-size: 14px;
+    line-height: 1;
+    margin-bottom: 20px;
+    text-align: left; /* Ensure ASCII art alignment is preserved */
+    width: 100%; /* Ensure it spans the flex container for centering */
+}
+
+#menu {
+    background-color: #000;
+    border: 10px solid #4a5d4e;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.2);
+    text-align: center;
+    color: #00ff00;
+    text-shadow: 0 0 3px #00ff00;
+    z-index: 10;
+    position: relative;
+}
+
+#menu h2 {
+    margin: 0 0 20px;
+}
+
+#difficulty-options {
+    text-align: left;
+    display: inline-block;
+}
+
+.option {
+    color: #00ff00;
+    font-size: 18px;
+    margin: 5px 0;
+    text-shadow: 0 0 3px #00ff00;
+}
+
+#game-container {
+    background-color: #000; /* Black background for the "screen" */
+    border: 10px solid #4a5d4e; /* Nokia gray-green border */
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.2); /* Inner glow */
+    position: relative;
+    width: 420px; /* Adjusted for canvas + padding */
+    margin: 0 auto; /* Additional centering for block-level element */
+    display: none; /* Ensure the container behaves as a block element */
+}
+
+#gameCanvas {
+    background-color: #1a2b1f; /* Dark green for the game area */
+    image-rendering: pixelated; /* For that retro pixel look */
+    display: block; /* Ensure canvas is a block element for centering */
+}
+
+#score {
+    color: #00ff00; /* Nokia green */
+    font-size: 18px;
+    margin-top: 10px;
+    text-align: center;
+    text-shadow: 0 0 3px #00ff00;
+}
+
+#game-over {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    text-align: center;
+    color: #00ff00;
+    text-shadow: 0 0 3px #00ff00;
+}
+
+#game-over h2 {
+    margin: 0 0 10px;
+}
+
+#game-over p {
+    margin: 0 0 20px;
+}
+
+#game-over button {
+    background-color: #4a5d4e;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 0 0 3px #00ff00;
+    margin: 5px;
+}
+
+#game-over button:hover {
+    background-color: #00ff00;
+    color: #000;
+    text-shadow: none;
+}
+
+#game-over-options {
+    text-align: left;
+    display: inline-block;
+}
+
+#pause-screen {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 20px;
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    text-align: center;
+    color: #00ff00;
+    text-shadow: 0 0 3px #00ff00;
+    z-index: 20;
+}
+
+#pause-screen h2 {
+    margin: 0 0 20px;
+}
+
+#pause-options {
+    text-align: left;
+    display: inline-block;
+}
