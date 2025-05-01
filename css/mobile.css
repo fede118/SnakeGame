@@ -1,0 +1,47 @@
+/* Styles for phone screens (16:9 ratio or smaller) */
+@media screen and (max-aspect-ratio: 9/16), (max-width: 768px) {
+    /* Show the title only on the main menu */
+    #menu #title {
+        display: block;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 12px; /* Reduce font size for smaller screens */
+        line-height: 1.2; /* Adjust line height for better spacing */
+        padding: 10px; /* Add padding around the title */
+        overflow: hidden; /* Ensure the title doesn't overflow */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #ascii-title {
+        font-size: 5px;
+        line-height: 1.1;
+        max-width: 90%;
+    }
+    
+    #gameCanvas {
+        display: block;
+    }
+
+    /* Ensure the game container fills the screen */
+    #game-container {
+        display: none;
+        width: 100vw;
+        height: 100vh;
+        flex-direction: column;
+        justify-content: flex-start; /* Align content to the top */
+        align-items: center;
+        padding: 0;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    /* Adjust game-over and pause screens for fullscreen */
+    #game-over, #pause-screen {
+        width: 90%;
+        max-width: 400px;
+        padding: 20px;
+    }
+}

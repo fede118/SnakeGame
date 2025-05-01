@@ -1,4 +1,5 @@
 import Menu from './menu/menu.js';
+import { initializeTouchSupport } from './touchsupport.js';
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -10,8 +11,9 @@ const menu = document.getElementById('menu');
 menu.style.display = 'block';
 const pauseScreen = document.getElementById('pause-screen');
 const gridSize = 20;
-const tileCount = canvas.width / gridSize;
 
+let tileCountX = canvas.width / gridSize;
+let tileCountY = canvas.height / gridSize;
 let snake = [{ x: 10, y: 10 }];
 let food = { x: 15, y: 15 };
 let dx = 0;
@@ -70,8 +72,9 @@ pauseMenu.updateMenu();
 
 function startGame(difficulty) {
     menu.style.display = 'none';
-    gameContainer.style.display = 'block';
+    gameContainer.style.display = 'flex';
     speed = difficultySpeeds[difficulty];
+    resizeCanvasForMobile();
     resetGame();
     gameLoop = setInterval(game, 1000 / speed);
     document.addEventListener('keydown', gameHandler);
@@ -99,6 +102,12 @@ function restartGame() {
 function goToMainMenu() {
     gameContainer.style.display = 'none';
     menu.style.display = 'block';
+    // Show the title only on the main menu
+    const title = document.getElementById('title');
+    if (title) {
+        title.style.display = 'block';
+    }
+
     resetGame();
     difficultyMenu.updateMenu();
     document.removeEventListener('keydown', gameHandler);
@@ -145,7 +154,7 @@ function game() {
     }
 
     // Check for collisions with walls
-    if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+    if (head.x < 0 || head.x >= tileCountX || head.y < 0 || head.y >= tileCountY) {
         clearInterval(gameLoop);
         finalScoreDisplay.textContent = score;
         gameOverScreen.style.display = 'block';
@@ -178,12 +187,12 @@ function game() {
 }
 
 function spawnFood() {
-    food.x = Math.floor(Math.random() * tileCount);
-    food.y = Math.floor(Math.random() * tileCount);
+    food.x = Math.floor(Math.random() * tileCountX);
+    food.y = Math.floor(Math.random() * tileCountY);
     // Ensure food doesn't spawn on snake
     while (snake.some(segment => segment.x === food.x && segment.y === food.y)) {
-        food.x = Math.floor(Math.random() * tileCount);
-        food.y = Math.floor(Math.random() * tileCount);
+        food.x = Math.floor(Math.random() * tileCountX);
+        food.y = Math.floor(Math.random() * tileCountY);
     }
 }
 
@@ -211,3 +220,79 @@ const gameHandler = (event) => {
             break;
     }
 };
+
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    initializeTouchSupport('game-container', (direction) => {
+        switch (direction) {
+            case 'up':
+                if (dy !== 1) { pendingDirection = { dx: 0, dy: -1 }; }
+                break;
+            case 'down':
+                if (dy !== -1) { pendingDirection = { dx: 0, dy: 1 }; }
+                break;
+            case 'left':
+                if (dx !== 1) { pendingDirection = { dx: -1, dy: 0 }; }
+                break;
+            case 'right':
+                if (dx !== -1) { pendingDirection = { dx: 1, dy: 0 }; }
+                break;
+        }
+    });
+}
+
+function resizeCanvasForMobile() {
+    // Target mobile devices (adjust threshold as needed)
+    if (window.innerWidth < 768) {
+        // Get the full screen dimensions
+        const screenWidth = window.innerWidth * 0.9;
+        const screenHeight = window.innerHeight * 0.9;
+
+        // Set the canvas dimensions to match the screen size
+        canvas.width = Math.floor(screenWidth / gridSize) * gridSize; // Ensure divisible by gridSize
+        canvas.height = Math.floor(screenHeight / gridSize) * gridSize; // Ensure divisible by gridSize
+        // Update the tile counts based on the new canvas size
+        tileCountX = canvas.width / gridSize;
+        tileCountY = canvas.height / gridSize;
+
+        console.log(`Canvas resized to: ${canvas.width}x${canvas.height}, Tile count: ${tileCountX}x${tileCountY}`);
+    } else {
+        // For desktop, use default canvas size
+        canvas.width = 400;
+        canvas.height = 400;
+        tileCountX = canvas.width / gridSize;
+        tileCountY = canvas.height / gridSize;
+    }
+}
+
+// Add touch support for difficulty menu
+document.querySelectorAll('#difficulty-options .option').forEach((option) => {
+    option.addEventListener('touchstart', () => {
+        const difficulty = option.id; // Get the ID of the tapped option (easy, medium, hard)
+        startGame(difficulty);
+        title.style.display = 'none';
+    });
+});
+
+// Add touch support for game over menu
+document.querySelectorAll('#game-over-options .option').forEach((option) => {
+    option.addEventListener('touchstart', () => {
+        if (option.id === 'restart') {
+            restartGame();
+        } else if (option.id === 'main-menu') {
+            goToMainMenu();
+            title.style.display = 'block';
+        }
+    });
+});
+
+// Add touch support for pause menu
+document.querySelectorAll('#pause-options .option').forEach((option) => {
+    option.addEventListener('touchstart', () => {
+        if (option.id === 'resume') {
+            resumeGame();
+        } else if (option.id === 'main-menu-pause') {
+            goToMainMenu();
+            title.style.display = 'block';
+        }
+    });
+});

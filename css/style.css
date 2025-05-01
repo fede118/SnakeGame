@@ -30,7 +30,6 @@ body {
     font-size: 14px;
     line-height: 1;
     margin-bottom: 20px;
-    text-align: left; /* Ensure ASCII art alignment is preserved */
     width: 100%; /* Ensure it spans the flex container for centering */
 }
 
@@ -72,6 +71,7 @@ body {
     position: relative;
     margin: 0 auto; /* Additional centering for block-level element */
     display: none; /* Ensure the container behaves as a block element */
+    touch-action: none; /* Disable default touch actions like scrolling */
 }
 
 #gameCanvas {
