@@ -9,9 +9,9 @@ const gameContainer = document.getElementById('game-container');
 const menu = document.getElementById('menu');
 menu.style.display = 'block';
 const pauseScreen = document.getElementById('pause-screen');
-
 const gridSize = 20;
 const tileCount = canvas.width / gridSize;
+
 let snake = [{ x: 10, y: 10 }];
 let food = { x: 15, y: 15 };
 let dx = 0;
@@ -20,6 +20,7 @@ let score = 0;
 let gameLoop;
 let speed;
 let isPaused = false;
+let pendingDirection = null;
 
 // Difficulty speeds (frames per second)
 const difficultySpeeds = {
@@ -96,7 +97,6 @@ function restartGame() {
 }
 
 function goToMainMenu() {
-    console.log('Going to main menu');
     gameContainer.style.display = 'none';
     menu.style.display = 'block';
     resetGame();
@@ -109,7 +109,7 @@ function togglePause() {
         isPaused = true;
         clearInterval(gameLoop);
         pauseScreen.style.display = 'block';
-        pauseMenu.updateMenu
+        pauseMenu.updateMenu();
         document.removeEventListener('keydown', gameHandler);
     } else {
         resumeGame();
@@ -124,13 +124,18 @@ function resumeGame() {
 }
 
 function game() {
+    // Apply pending direction if available
+    if (pendingDirection) {
+        dx = pendingDirection.dx;
+        dy = pendingDirection.dy;
+        pendingDirection = null; // Clear the queue
+    }
+
     // Move snake
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-    // snake.unshift(head);
 
     // Check for collisions with the body (excluding the head itself)
     if (snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)) {
-        console.log('Game Over: Snake collided with itself.');
         clearInterval(gameLoop);
         finalScoreDisplay.textContent = score;
         gameOverScreen.style.display = 'block';
@@ -138,7 +143,17 @@ function game() {
         document.removeEventListener('keydown', gameHandler);
         return;
     }
-    
+
+    // Check for collisions with walls
+    if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+        clearInterval(gameLoop);
+        finalScoreDisplay.textContent = score;
+        gameOverScreen.style.display = 'block';
+        gameOverMenu.updateMenu();
+        document.removeEventListener('keydown', gameHandler);
+        return;
+    }
+
     // Add the new head to the snake
     snake.unshift(head);
 
@@ -149,26 +164,6 @@ function game() {
         spawnFood();
     } else {
         snake.pop();
-    }
-
-    // Check for collisions
-    // if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)) {
-    //     clearInterval(gameLoop);
-    //     finalScoreDisplay.textContent = score;
-    //     gameOverScreen.style.display = 'block';
-    //     gameOverMenu.updateMenu();
-    //     document.removeEventListener('keydown', gameHandler);
-    //     return;
-    // }
-    // Check for collisions with walls
-    if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
-        console.log('Game Over: Snake hit the wall.');
-        clearInterval(gameLoop);
-        finalScoreDisplay.textContent = score;
-        gameOverScreen.style.display = 'block';
-        gameOverMenu.updateMenu();
-        document.removeEventListener('keydown', gameHandler);
-        return;
     }
 
     // Draw game
@@ -200,18 +195,19 @@ const gameHandler = (event) => {
     if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         event.preventDefault();
     }
+    // Queue the new direction
     switch (event.key) {
         case 'ArrowUp':
-            if (dy !== 1) { dx = 0; dy = -1; }
+            if (dy !== 1) { pendingDirection = { dx: 0, dy: -1 }; }
             break;
         case 'ArrowDown':
-            if (dy !== -1) { dx = 0; dy = 1; }
+            if (dy !== -1) { pendingDirection = { dx: 0, dy: 1 }; }
             break;
         case 'ArrowLeft':
-            if (dx !== 1) { dx = -1; dy = 0; }
+            if (dx !== 1) { pendingDirection = { dx: -1, dy: 0 }; }
             break;
         case 'ArrowRight':
-            if (dx !== -1) { dx = 1; dy = 0; }
+            if (dx !== -1) { pendingDirection = { dx: 1, dy: 0 }; }
             break;
     }
 };
